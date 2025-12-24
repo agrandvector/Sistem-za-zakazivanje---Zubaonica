@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ponuda za Sistem Zakazivanja</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '🎄';
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.1;
+            top: -20px;
+            right: 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header .client {
+            font-size: 1.3em;
+            margin: 10px 0;
+            font-weight: 300;
+        }
+        
+        .validity {
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .services-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .services-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .services-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .services-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .services-table tr:hover {
+            background: #f8f9ff;
+        }
+        
+        .services-table .total-row {
+            background: #f0f0ff;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        
+        .promo-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.3);
+        }
+        
+        .promo-box h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .price-breakdown {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .final-price {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255,255,255,0.5);
+        }
+        
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .payment-card {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .payment-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .payment-card h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .payment-card ul {
+            list-style: none;
+            color: #555;
+        }
+        
+        .payment-card li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .payment-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .maintenance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .maintenance-item {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .maintenance-item:hover {
+            background: #e8e9ff;
+            transform: translateX(5px);
+        }
+        
+        .maintenance-item h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .maintenance-item .price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .note {
+            background: #fff9e6;
+            border-left: 4px solid #ffd700;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-style: italic;
+        }
+        
+        .delivery-box {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            color: #333;
+        }
+        
+        .delivery-box h3 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .delivery-item {
+            background: rgba(255,255,255,0.8);
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer {
+            background: #f8f9ff;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .contact-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Za <span style="font-weight: bold; color: #d5f28b;">417,60€</span> kompletan sistem za zakazivanje koji šalje podsetnike, doktorima puni kalendar, štedi vreme i spreman za rad za <span style="font-weight: bold; color: #4ecdc4;">7 dana</span></h1>
+            <div class="client">Za: Zubanica</div>
+            <div style="margin-top: 10px;">Datum: 24. decembar 2024.</div>
+            <div class="validity">⏰ Važi do: 14. januar 2025.</div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">📋 UKLJUČENE USLUGE</h2>
+                <table class="services-table">
+                    <thead>
+                        <tr>
+                            <th>Stavka</th>
+                            <th style="text-align: right;">Cena</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sistem za zakazivanje termina</td>
+                            <td style="text-align: right;">200€</td>
+                        </tr>
+                        <tr>
+                            <td>Mobilni sistem (iOS/Android)</td>
+                            <td style="text-align: right;">✓</td>
+                        </tr>
+                        <tr>
+                            <td>Google Calendar sinhronizacija (4 doktora)<br><small>Obaveštenja za klijente i doktore</small></td>
+                            <td style="text-align: right;">160€</td>
+                        </tr>
+                        <tr>
+                            <td>Automatizacija podsetnika za redovne kontrole<br><small>(SMS/Viber/Email)</small></td>
+                            <td style="text-align: right;">100€</td>
+                        </tr>
+                        <tr>
+                            <td>Google Business profil</td>
+                            <td style="text-align: right;">120€</td>
+                        </tr>
+                        <tr>
+                            <td>Video uputstvo za osoblje</td>
+                            <td style="text-align: right;">Besplatno</td>
+                        </tr>
+                        <tr>
+                            <td>Migracija postojeće baze klijenata</td>
+                            <td style="text-align: right;">0 - 200€</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>UKUPNO</td>
+                            <td style="text-align: right;">580€</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="section">
+                <div class="promo-box">
+                    <h3>🎄 NOVOGODIŠNJA AKCIJA - 20% POPUSTA</h3>
+                    <p style="text-align: center; font-size: 1.1em; margin-bottom: 20px;">Važi samo do 1. januara 2025. (7 dana)</p>
+                    
+                    <div class="price-breakdown">
+                        <div class="price-item">
+                            <span>Regularna cena:</span>
+                            <span style="text-decoration: line-through;">580€</span>
+                        </div>
+                        <div class="price-item">
+                            <span>Sa novogodišnjim popustom (20%):</span>
+                            <span><strong>464€</strong></span>
+                        </div>
+                        <div class="price-item">
+                            <span>Dodatni popust za avansno plaćanje (10%):</span>
+                            <span></span>
+                        </div>
+                        <div class="final-price">
+                            417,60€
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">💳 USLOVI PLAĆANJA USLUGA</h2>
+                <div class="payment-options">
+                    <div class="payment-card">
+                        <h4>🎯 Standardna opcija</h4>
+                        <ul>
+                            <li>50% avans pre početka rada<br><strong>(232€)</strong></li>
+                            <li>50% po isporuci<br><strong>(232€)</strong></li>
+                            <li>Ukupna cena: <strong>464€</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="payment-card">
+                        <h4>⭐ Najpovoljnije</h4>
+                        <ul>
+                            <li>100% unapred</li>
+                            <li><strong>Dodatnih 10% popusta</strong></li>
+                            <li>Ukupna cena: <strong>417,60€</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="payment-card">
+                        <h4>📅 Plaćanje na rate</h4>
+                        <ul>
+                            <li>25% pre početka rada <strong>(130,50€)</strong>
+                            <li>25% po isporuci <strong>(130,50€)</strong>
+                            <li>25% mesečno (2 meseca) <strong>(130,50€)</strong>
+                            <li>Ukupna cena (NG akcija 10%): <strong>522€</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="note">
+                    ℹ️ <strong>Napomena:</strong> Mesečno održavanje podleže drugačijim uslovima plaćanja u odnosu na usluge.
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🔧 MESEČNO ODRŽAVANJE</h2>
+                <div class="maintenance-grid">
+                    <div class="maintenance-item">
+                        <h4>Bez podsetnika<br>(bez Calendar)</h4>
+                        <div class="price">60€/mes</div>
+                    </div>
+                    <div class="maintenance-item">
+                        <h4>Bez podsetnika<br>(sa Calendar)</h4>
+                        <div class="price">70€/mes</div>
+                    </div>
+                    <div class="maintenance-item">
+                        <h4>Email podsetnik</h4>
+                        <div class="price">80€/mes</div>
+                    </div>
+                    <div class="maintenance-item">
+                        <h4>SMS podsetnik*</h4>
+                        <div class="price">125€/mes</div>
+                        <small>1000 besplatno posle 0,02€ po SMS-u</small>
+                    </div>
+                    <div class="maintenance-item">
+                        <h4>Viber podsetnik**</h4>
+                        <div class="price">320€/mes</div>
+                        <small>+ 0,03€ po poruci</small>
+                    </div>
+                    <div class="maintenance-item">
+                        <h4>Podrška***</h4>
+                        <div class="price">+15€/mes</div>
+                        <small>ili 30€ po intervenciji</small>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <div class="note">
+                        * <strong>SMS:</strong> Prvi mesec se plaća 250€, a zatim 125€ mesečno
+                    </div>
+                    <div class="note">
+                        ** <strong>Viber:</strong> 2 meseca unapred
+                    </div>
+                    <div class="note">
+                        *** <strong>Podrška:</strong> Prvi mesec besplatna
+                    </div>
+                </div>
+                
+                <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 15px;">💰 Popusti na duži periodi plaćanja:</h4>
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <strong>3 meseci unapred:</strong> 5% popusta na ukupnu cenu održavanja
+                        </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <strong>6 meseci unapred:</strong> 10% popusta na ukupnu cenu održavanja
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px; color: #666;">
+                        📅 Plaćanje do 15. u mesecu
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="delivery-box">
+                    <h3>⚡ ROK ISPORUKE</h3>
+                    <div class="delivery-item">
+                        <span><strong>Očekivano:</strong></span>
+                        <span style="font-weight: bold;">do 7 dana</span>
+                    </div>
+                    <div class="delivery-item">
+                        <span><strong>Maksimalno:</strong></span>
+                        <span style="font-weight: bold;">30 dana</span>
+                    </div>
+                    <div style="margin-top: 15px; background: rgba(255,255,255,0.8); padding: 15px; border-radius: 8px;">
+                        ℹ️ Ukoliko neka stavka ne bude isporučena, cena će biti umanjena za vrednost te stavke.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">📌 NAPOMENE</h2>
+                <div style="background: #f8f9ff; padding: 20px; border-radius: 10px;">
+                    <ul style="list-style: none; color: #555;">
+                        <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0; color: #667eea; font-weight: bold;">•</span>
+                            Cene su okvirne i podložne korekcijama u zavisnosti od odabranih kombinacija paketa
+                        </li>
+                        <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                            <span style="position: absolute; left: 0; color: #667eea; font-weight: bold;">•</span>
+                            <strong>Ponuda važi: 21 dan od datuma izdavanja</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p style="margin-bottom: 20px; color: #333;">Hvala vam na poverenju! 🙏</p>
+            <div class="contact-box">
+                <strong>📞 Kontakt za potvrdu:</strong><br>
+                <div style="margin-top: 10px; font-size: 1.2em;">
+                    [Unesite svoje kontakt podatke]
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
